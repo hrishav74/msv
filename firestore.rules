@@ -1,0 +1,132 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isApprover() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.keys().hasAny(['role'])
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['manager', 'approver'];
+    }
+
+    function ownUserProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function counterRequestMatches(counterData) {
+      return counterData.lastRequestId is string
+        && getAfter(/databases/$(database)/documents/voucherRequests/$(counterData.lastRequestId)).data.referenceNumber == counterData.lastReference
+        && getAfter(/databases/$(database)/documents/voucherRequests/$(counterData.lastRequestId)).data.userId == request.auth.uid;
+    }
+
+    match /users/{userId} {
+      allow create: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasAll(['name', 'location', 'employeeId', 'email', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['name', 'location', 'employeeId', 'email', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.location in ['Bengaluru', 'Nagpur', 'Gurgaon', 'Hyderabad', 'Kolkata', 'Indore', 'Noida', 'Mohali', 'Chandigarh', 'Mysore', 'Bhubaneswar', 'Trivandrum', 'Pune', 'Mcity']
+        && request.resource.data.employeeId.matches('^[0-9]{7}$')
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.createdAt == request.time;
+
+      allow get: if signedIn() && request.auth.uid == userId;
+      allow list, update, delete: if false;
+    }
+
+    match /referenceCounters/{counterId} {
+      allow get: if signedIn() && counterId == 'voucherRequests';
+      allow list, delete: if false;
+
+      allow create: if signedIn()
+        && counterId == 'voucherRequests'
+        && request.resource.data.keys().hasAll(['lastReference', 'lastRequestId'])
+        && request.resource.data.keys().hasOnly(['lastReference', 'lastRequestId'])
+        && request.resource.data.lastReference == 1001
+        && counterRequestMatches(request.resource.data);
+
+      allow update: if signedIn()
+        && counterId == 'voucherRequests'
+        && request.resource.data.keys().hasAll(['lastReference', 'lastRequestId'])
+        && request.resource.data.keys().hasOnly(['lastReference', 'lastRequestId'])
+        && request.resource.data.lastReference == resource.data.lastReference + 1
+        && request.resource.data.lastRequestId != resource.data.lastRequestId
+        && counterRequestMatches(request.resource.data);
+    }
+
+    match /voucherRequests/{requestId} {
+      allow create: if signedIn()
+        && !isApprover()
+        && request.resource.data.keys().hasAll([
+          'userId', 'employeeId', 'employeeName', 'employeeEmail',
+          'employeeLocation', 'certificationCode', 'remarks', 'referenceNumber', 'status', 'createdAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'userId', 'employeeId', 'employeeName', 'employeeEmail',
+          'employeeLocation', 'certificationCode', 'remarks', 'referenceNumber', 'status', 'createdAt'
+        ])
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.employeeId == ownUserProfile().data.employeeId
+        && request.resource.data.employeeName == ownUserProfile().data.name
+        && request.resource.data.employeeEmail == request.auth.token.email
+        && request.resource.data.employeeLocation in ['Bengaluru', 'Nagpur', 'Gurgaon', 'Hyderabad', 'Kolkata', 'Indore', 'Noida', 'Mohali', 'Chandigarh', 'Mysore', 'Bhubaneswar', 'Trivandrum', 'Pune', 'Mcity']
+        && request.resource.data.certificationCode in ['PL-100', 'PL-200', 'PL-300', 'PL-400', 'PL-500', 'PL-600', 'PL-700', 'PL-800', 'PL-900']
+        && request.resource.data.remarks is string
+        && request.resource.data.referenceNumber is int
+        && request.resource.data.referenceNumber >= 1001
+        && getAfter(/databases/$(database)/documents/referenceCounters/voucherRequests).data.lastReference == request.resource.data.referenceNumber
+        && getAfter(/databases/$(database)/documents/referenceCounters/voucherRequests).data.lastRequestId == requestId
+        && request.resource.data.status == 'pending'
+        && request.resource.data.createdAt == request.time;
+
+      allow get, list: if signedIn()
+        && ((!isApprover() && resource.data.userId == request.auth.uid)
+          || (isApprover() && resource.data.status == 'pending'));
+      allow delete: if signedIn()
+        && !isApprover()
+        && resource.data.userId == request.auth.uid
+        && resource.data.status == 'pending';
+      allow update: if isApprover()
+        && resource.data.userId != request.auth.uid
+        && resource.data.status == 'pending'
+        && request.resource.data.status in ['approved', 'rejected']
+        && request.resource.data.reviewedBy == request.auth.token.email
+        && request.resource.data.reviewedAt == request.time
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'status', 'reviewedAt', 'reviewedBy', 'voucherCode', 'rejectionRemarks'
+        ])
+        && (
+          (request.resource.data.status == 'rejected'
+            && !request.resource.data.keys().hasAny(['voucherCode']))
+            && request.resource.data.keys().hasAny(['rejectionRemarks'])
+            && request.resource.data.rejectionRemarks is string
+            && request.resource.data.rejectionRemarks.size() > 0
+            && request.resource.data.rejectionRemarks.size() <= 1000
+          || (request.resource.data.status == 'approved'
+            && !request.resource.data.keys().hasAny(['rejectionRemarks'])
+            && request.resource.data.voucherCode.matches('^MSVC[0-9]{3,5}$')
+            && getAfter(/databases/$(database)/documents/voucherCodes/$(request.resource.data.voucherCode)).data.requestId == requestId)
+        );
+    }
+
+    match /voucherCodes/{voucherCode} {
+      allow get: if isApprover();
+      allow list, update, delete: if false;
+
+      allow create: if isApprover()
+        && voucherCode.matches('^MSVC[0-9]{3,5}$')
+        && request.resource.data.keys().hasAll(['requestId', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['requestId', 'createdAt'])
+        && request.resource.data.requestId is string
+        && request.resource.data.createdAt == request.time
+        && get(/databases/$(database)/documents/voucherRequests/$(request.resource.data.requestId)).data.status == 'pending'
+        && getAfter(/databases/$(database)/documents/voucherRequests/$(request.resource.data.requestId)).data.status == 'approved'
+        && getAfter(/databases/$(database)/documents/voucherRequests/$(request.resource.data.requestId)).data.voucherCode == voucherCode;
+    }
+  }
+}

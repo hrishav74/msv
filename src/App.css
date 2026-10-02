@@ -1,0 +1,1062 @@
+.portal {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  background: #f8f8f6;
+  box-shadow: 0 0 0 1px #e2e6e7;
+}
+
+.portal-header {
+  position: relative;
+  z-index: 3;
+  min-height: 70px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  padding: 0 34px;
+  background: #b9dce9;
+  color: #142d43;
+  border-bottom: 5px solid #e4f0f3;
+}
+
+.company-mark {
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.company-mark span {
+  font-weight: 600;
+}
+
+.portal-header h1 {
+  margin: 0;
+  color: #10263b;
+  font-size: 25px;
+  line-height: 1.2;
+  text-align: center;
+  font-weight: 700;
+}
+
+.profile-area {
+  position: relative;
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-welcome {
+  display: block;
+  max-width: 9rem;
+  color: #142d43;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.profile-button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  padding: 3px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #142d43;
+  cursor: pointer;
+}
+
+.profile-button:hover {
+  background: rgb(255 255 255 / 35%);
+}
+
+.profile-button:focus-visible {
+  outline: 3px solid #168b7d;
+  outline-offset: 2px;
+}
+
+.profile-button svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 1.8;
+}
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  z-index: 5;
+  width: 156px;
+  padding: 5px;
+  border: 1px solid #d7dfe1;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgb(20 45 67 / 18%);
+}
+
+.profile-menu-item {
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #263746;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.profile-menu-item:hover,
+.profile-menu-item:focus-visible {
+  background: #edf3f4;
+}
+
+.profile-menu-item:focus-visible {
+  outline: 2px solid #168b7d;
+  outline-offset: -2px;
+}
+
+.portal-nav {
+  min-height: 53px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 5px 18px;
+  background: #e7eef0;
+  border-bottom: 1px solid #d6dfe1;
+}
+
+.nav-button {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 18rem;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border: 1px solid #244e83;
+  border-radius: 7px;
+  background: #315f9c;
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 15%);
+}
+
+.nav-button:hover,
+.nav-button.is-active {
+  background: #204d85;
+}
+
+.nav-button:focus-visible,
+.login-button:focus-visible,
+.faq-button:focus-visible {
+  outline: 3px solid #42a99b;
+  outline-offset: 2px;
+}
+
+.nav-icon {
+  display: inline-grid;
+  width: 17px;
+  height: 17px;
+  place-items: center;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.nav-icon-approvals {
+  border-radius: 3px;
+  background: #85bc48;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.portal-content {
+  position: relative;
+  flex: 1 0 auto;
+  min-height: 0;
+  margin: 9px 0 0;
+  padding: 25px 22px 62px;
+  background: #f5f5f2;
+}
+
+.form-message {
+  width: min(100%, 36rem);
+  margin: 0 auto 16px;
+  padding: 9px 12px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.form-message-error {
+  border-color: #d8aaa5;
+  background: #fff0ee;
+  color: #842e27;
+}
+
+.form-message-success {
+  border-color: #9ccfc1;
+  background: #eaf6f1;
+  color: #176553;
+}
+
+.notice {
+  margin: 0 auto 40px;
+  color: #1c1c1c;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 550;
+  line-height: 1.35;
+}
+
+.login-form {
+  width: min(100%, 24rem);
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: 14px 16px;
+  margin: 0 auto;
+  color: #222;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.login-form input {
+  width: 100%;
+  height: 34px;
+  box-sizing: border-box;
+  padding: 5px 12px;
+  border: 1px solid #686868;
+  border-radius: 15px;
+  background: #fbfbf9;
+  color: #222;
+  font: inherit;
+  font-weight: 400;
+  text-align: center;
+}
+
+.login-form input::placeholder {
+  color: #686868;
+  opacity: 1;
+}
+
+.login-form input:focus {
+  border-color: #188879;
+  outline: 2px solid rgb(24 136 121 / 20%);
+}
+
+.login-button {
+  min-height: 34px;
+  flex: 1 1 0;
+  min-width: 0;
+  border: 0;
+  border-radius: 18px;
+  background: #168b7d;
+  color: white;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.login-actions {
+  grid-column: 2;
+  justify-self: center;
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  margin-top: 17px;
+}
+
+.login-button:hover {
+  background: #117568;
+}
+
+.signup-button {
+  min-height: 34px;
+  flex: 1 1 0;
+  min-width: 0;
+  border: 1px solid #168b7d;
+  border-radius: 18px;
+  background: transparent;
+  color: #117568;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.signup-button:hover {
+  background: #e4f1ed;
+}
+
+.faq-button {
+  position: absolute;
+  bottom: 22px;
+  left: 22px;
+  min-height: 31px;
+  padding: 4px 15px;
+  border: 0;
+  border-radius: 5px;
+  background: #74766f;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.faq-button:hover {
+  background: #5f625c;
+}
+
+.voucher-title {
+  margin: 0 0 7px;
+  color: #202020;
+  font-size: 20px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.requests-page {
+  width: min(100%, 78rem);
+  margin: 0 auto;
+}
+
+.requests-title {
+  margin: 0 0 18px;
+  color: #202020;
+  font-size: 20px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.requests-empty {
+  margin: 24px auto;
+  color: #48565b;
+  text-align: center;
+}
+
+.request-group {
+  margin: 0 0 24px;
+}
+
+.request-group-heading {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 7px 12px;
+  border-left: 4px solid #168b7d;
+  background: #e2ecee;
+  color: #18344a;
+}
+
+.request-group-heading h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.request-group-heading > span {
+  min-width: 24px;
+  color: #48565b;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.requests-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #d4dfe1;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.requests-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  color: #252525;
+  font-size: 14px;
+}
+
+.approvals-table {
+  min-width: 900px;
+}
+
+.requests-table th,
+.requests-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e6e7;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.requests-table th {
+  background: #e7eef0;
+  color: #18344a;
+  font-weight: 700;
+}
+
+.requests-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.request-status {
+  display: inline-flex;
+  min-height: 23px;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #fff2d8;
+  color: #785313;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.request-status-approved {
+  background: #e1f2e7;
+  color: #23613a;
+}
+
+.request-status-rejected {
+  background: #fae6e3;
+  color: #8b302b;
+}
+
+.view-voucher-details-button,
+.copy-voucher-code-button {
+  min-height: 30px;
+  padding: 4px 10px;
+  border: 1px solid #315f9c;
+  border-radius: 4px;
+  background: #fff;
+  color: #244e83;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.copy-voucher-code-button {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.copy-voucher-code-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.view-voucher-details-button:hover,
+.copy-voucher-code-button:hover {
+  background: #eaf1f7;
+}
+
+.view-voucher-details-button:focus-visible,
+.copy-voucher-code-button:focus-visible {
+  outline: 3px solid #42a99b;
+  outline-offset: 2px;
+}
+
+.voucher-code-row td {
+  padding: 0 12px 12px;
+  background: #f5f8f8;
+}
+
+.voucher-code-details {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 10px 12px;
+  border-left: 3px solid #168b7d;
+  background: #eaf2f1;
+}
+
+.voucher-code-details > span {
+  color: #18344a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.voucher-code-details code {
+  padding: 5px 8px;
+  background: #fff;
+  color: #1f3f38;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.rejection-remarks-row td,
+.request-remarks-row td {
+  padding: 8px 12px 12px;
+  background: #f5f8f8;
+  white-space: normal;
+}
+
+.rejection-remarks-form {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  border-left: 3px solid #a44a43;
+  background: #fff5f3;
+}
+
+.rejection-remarks-form label,
+.request-remarks-details > span {
+  color: #18344a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.rejection-remarks-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 64px;
+  padding: 9px 10px;
+  border: 1px solid #bdc9cb;
+  border-radius: 4px;
+  color: #252525;
+  font: inherit;
+  resize: vertical;
+}
+
+.rejection-remarks-form textarea:focus-visible {
+  outline: 3px solid #42a99b;
+  outline-offset: 2px;
+}
+
+.rejection-remarks-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.request-remarks-details {
+  padding: 10px 12px;
+  border-left: 3px solid #a44a43;
+  background: #fff5f3;
+}
+
+.request-remarks-details p {
+  margin: 5px 0 0;
+  color: #252525;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.approval-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.approve-request-button,
+.reject-request-button {
+  min-height: 30px;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.approve-request-button {
+  border-color: #167562;
+  background: #168b7d;
+}
+
+.approve-request-button:hover:not(:disabled) {
+  background: #116e63;
+}
+
+.reject-request-button {
+  border-color: #a44a43;
+  background: #a44a43;
+}
+
+.reject-request-button:hover:not(:disabled) {
+  background: #85372f;
+}
+
+.approve-request-button:focus-visible,
+.reject-request-button:focus-visible {
+  outline: 3px solid #42a99b;
+  outline-offset: 2px;
+}
+
+.approve-request-button:disabled,
+.reject-request-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.cancel-request-button {
+  min-height: 30px;
+  padding: 4px 11px;
+  border: 1px solid #a44a43;
+  border-radius: 4px;
+  background: #fff;
+  color: #85372f;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.cancel-request-button:hover:not(:disabled) {
+  background: #fff0ee;
+}
+
+.cancel-request-button:focus-visible {
+  outline: 3px solid #42a99b;
+  outline-offset: 2px;
+}
+
+.cancel-request-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.voucher-warning {
+  margin: 0 auto 22px;
+  color: #813f38;
+  font-size: 13px;
+  font-weight: 650;
+  text-align: center;
+}
+
+.voucher-form {
+  width: min(100%, 29rem);
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 6px 10px;
+  margin: 0 auto;
+  color: #252525;
+  font-size: 14px;
+}
+
+.voucher-form > label,
+.signup-form > label {
+  font-weight: 700;
+}
+
+.voucher-form input,
+.voucher-form select,
+.voucher-readonly-value {
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid #777;
+  border-radius: 3px;
+  background: #fbfbf9;
+  color: #222;
+  font: inherit;
+}
+
+.voucher-readonly-value {
+  display: flex;
+  align-items: center;
+  background: #e9efef;
+}
+
+.voucher-form input:focus,
+.voucher-form select:focus {
+  border-color: #315f9c;
+  outline: 2px solid rgb(49 95 156 / 20%);
+}
+
+.submit-request-button {
+  min-height: 38px;
+  justify-self: start;
+  padding: 6px 19px;
+  border: 1px solid #244e83;
+  border-radius: 6px;
+  background: #315f9c;
+  color: #fff;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.submit-request-button:hover {
+  background: #204d85;
+}
+
+.submit-request-button:focus-visible,
+.home-button:focus-visible {
+  outline: 3px solid #42a99b;
+  outline-offset: 2px;
+}
+
+.home-button {
+  position: absolute;
+  bottom: 19px;
+  left: 22px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 3px;
+  border: 0;
+  background: transparent;
+  color: #ba776d;
+  cursor: pointer;
+}
+
+.home-button svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.signup-back-button {
+  position: absolute;
+  top: 12px;
+  left: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 7px;
+  border: 0;
+  background: transparent;
+  color: #315f9c;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.signup-back-button:hover {
+  color: #204d85;
+  text-decoration: underline;
+}
+
+.signup-back-button:focus-visible {
+  outline: 3px solid #42a99b;
+  outline-offset: 2px;
+}
+
+.signup-title {
+  margin: 10px 0 12px;
+  color: #202020;
+  font-size: 20px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.signup-form {
+  width: min(100%, 24rem);
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: 7px 10px;
+  margin: 0 auto;
+  color: #252525;
+  font-size: 14px;
+}
+
+.signup-form input,
+.signup-form select {
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid #686868;
+  border-radius: 5px;
+  background: #fbfbf9;
+  color: #222;
+  font: inherit;
+}
+
+.signup-form input:focus,
+.signup-form select:focus {
+  border-color: #188879;
+  outline: 2px solid rgb(24 136 121 / 20%);
+}
+
+.signup-submit-button {
+  min-height: 32px;
+  justify-self: start;
+  padding: 5px 16px;
+  border: 0;
+  border-radius: 18px;
+  background: #168b7d;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.signup-submit-button:hover {
+  background: #117568;
+}
+
+.signup-submit-button:focus-visible {
+  outline: 3px solid #42a99b;
+  outline-offset: 2px;
+}
+
+@media (max-width: 680px) {
+  .portal-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 9px 12px;
+    padding: 12px 16px;
+  }
+
+  .portal-header h1 {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: 21px;
+    text-align: left;
+  }
+
+  .profile-area {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .profile-welcome {
+    max-width: clamp(3.5rem, calc(100vw - 260px), 9rem);
+    font-size: 12px;
+  }
+
+  .portal-nav {
+    justify-content: stretch;
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .nav-button {
+    flex: 1;
+    min-width: 0;
+    min-height: 42px;
+    gap: 4px;
+    padding: 5px 4px;
+    font-size: 11px;
+    line-height: 1.1;
+  }
+
+  .nav-icon {
+    flex: 0 0 auto;
+  }
+
+  .portal-content {
+    margin: 8px 0 0;
+    padding: 22px 14px 58px;
+  }
+
+  .notice {
+    margin-bottom: 33px;
+    font-size: 14px;
+  }
+
+  .login-form {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 15px 10px;
+    font-size: 14px;
+  }
+
+  .login-actions {
+    gap: 7px;
+  }
+
+  .faq-button {
+    left: 14px;
+  }
+
+  .voucher-title {
+    font-size: 18px;
+  }
+
+  .voucher-warning {
+    margin-bottom: 20px;
+    font-size: 12px;
+  }
+
+  .voucher-form {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 9px 9px;
+    font-size: 13px;
+  }
+
+  .home-button {
+    left: 10px;
+  }
+
+  .signup-back-button {
+    left: 9px;
+  }
+
+  .signup-form {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 7px 8px;
+    font-size: 12px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .portal-header {
+    min-height: 48px;
+    padding: 6px 18px;
+  }
+
+  .portal-header h1 {
+    font-size: 21px;
+  }
+
+  .profile-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .profile-button svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .portal-nav {
+    min-height: 42px;
+    gap: 8px;
+    padding: 4px 12px;
+  }
+
+  .nav-button {
+    min-height: 30px;
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+
+  .portal-content {
+    margin-top: 4px;
+    padding: 8px 18px 34px;
+  }
+
+  .notice {
+    margin-bottom: 14px;
+    font-size: 13px;
+  }
+
+  .login-form {
+    gap: 8px 12px;
+  }
+
+  .login-form input,
+  .login-button,
+  .signup-button {
+    min-height: 30px;
+    height: 30px;
+  }
+
+  .login-actions {
+    margin-top: 8px;
+  }
+
+  .faq-button,
+  .home-button {
+    bottom: 9px;
+  }
+
+  .voucher-title,
+  .signup-title {
+    font-size: 18px;
+  }
+
+  .voucher-title {
+    margin-bottom: 3px;
+  }
+
+  .voucher-warning {
+    margin-bottom: 6px;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .voucher-form {
+    gap: 2px 10px;
+    font-size: 13px;
+  }
+
+  .voucher-form input,
+  .voucher-form select {
+    height: 26px;
+    padding: 3px 8px;
+  }
+
+  .submit-request-button {
+    min-height: 30px;
+    padding: 4px 14px;
+  }
+
+  .signup-title {
+    margin: 5px 0 7px;
+  }
+
+  .signup-form {
+    gap: 4px 8px;
+  }
+
+  .signup-form input,
+  .signup-form select,
+  .signup-submit-button {
+    height: 28px;
+    min-height: 28px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 420px) and (min-width: 600px) {
+  .voucher-form {
+    width: min(100%, 42rem);
+    grid-template-columns:
+      minmax(0, 0.8fr) minmax(0, 1.1fr)
+      minmax(0, 0.8fr) minmax(0, 1.1fr);
+    gap: 4px 8px;
+  }
+
+  .voucher-form > span {
+    display: none;
+  }
+
+  .submit-request-button {
+    grid-column: 2 / -1;
+    justify-self: center;
+  }
+}
