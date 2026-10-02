@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { createUserWithEmailAndPassword, deleteUser, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { collection, deleteDoc, doc, getDoc, getDocs, query, runTransaction, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDoc, onSnapshot, query, runTransaction, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore'
 import { auth, db, firebaseConfigured } from './firebase'
 import './App.css'
 
@@ -127,48 +127,40 @@ function App() {
   useEffect(() => {
     if (!authUser || activePage !== 'requests') return undefined
 
-    let isCurrent = true
-    getDocs(query(collection(db, 'voucherRequests'), where('userId', '==', authUser.uid)))
-      .then((snapshot) => {
+    return onSnapshot(
+      query(collection(db, 'voucherRequests'), where('userId', '==', authUser.uid)),
+      (snapshot) => {
         const requests = snapshot.docs
           .map((requestSnapshot) => ({ id: requestSnapshot.id, ...requestSnapshot.data() }))
           .sort((first, second) => (second.createdAt?.toMillis?.() ?? 0) - (first.createdAt?.toMillis?.() ?? 0))
-        if (isCurrent) setVoucherRequests(requests)
-      })
-      .catch((error) => {
-        if (isCurrent) setFormMessage({ type: 'error', text: getFirebaseErrorMessage(error) })
-      })
-      .finally(() => {
-        if (isCurrent) setRequestsLoading(false)
-      })
-
-    return () => {
-      isCurrent = false
-    }
+        setVoucherRequests(requests)
+        setRequestsLoading(false)
+      },
+      (error) => {
+        setFormMessage({ type: 'error', text: getFirebaseErrorMessage(error) })
+        setRequestsLoading(false)
+      },
+    )
   }, [activePage, authUser])
 
   useEffect(() => {
     if (!authUser || activePage !== 'approvals' || !isApprover(profile)) return undefined
 
-    let isCurrent = true
-    getDocs(query(collection(db, 'voucherRequests'), where('status', '==', 'pending')))
-      .then((snapshot) => {
+    return onSnapshot(
+      query(collection(db, 'voucherRequests'), where('status', '==', 'pending')),
+      (snapshot) => {
         const requests = snapshot.docs
           .map((requestSnapshot) => ({ id: requestSnapshot.id, ...requestSnapshot.data() }))
           .filter((request) => request.userId !== authUser.uid)
           .sort((first, second) => (second.createdAt?.toMillis?.() ?? 0) - (first.createdAt?.toMillis?.() ?? 0))
-        if (isCurrent) setApprovalRequests(requests)
-      })
-      .catch((error) => {
-        if (isCurrent) setFormMessage({ type: 'error', text: getFirebaseErrorMessage(error) })
-      })
-      .finally(() => {
-        if (isCurrent) setApprovalsLoading(false)
-      })
-
-    return () => {
-      isCurrent = false
-    }
+        setApprovalRequests(requests)
+        setApprovalsLoading(false)
+      },
+      (error) => {
+        setFormMessage({ type: 'error', text: getFirebaseErrorMessage(error) })
+        setApprovalsLoading(false)
+      },
+    )
   }, [activePage, authUser, profile])
 
   useEffect(() => {
