@@ -9,9 +9,9 @@
 5. Publish the rules in `firestore.rules` from the Firestore Rules tab.
 6. Restart the Vite server and run `npm run dev`.
 
-The app stores account profile documents in the `users` collection and voucher submissions in `voucherRequests`. Firebase Authentication manages passwords; password values are never written to Firestore. The login form uses email and password, and the employee ID is stored as profile data.
+The app stores account profile documents in the `users` collection and voucher submissions in `voucherRequests`. New requests receive sequential numeric reference numbers starting at 3072, stored with a Firestore transaction and shared counter. Existing requests remain readable. Users can edit their name, employee ID, and location; the email remains read-only. Password changes reauthenticate with the current password. Profile photos are optional, resized in the browser, and saved only in that browser's local storage; they are not uploaded to Firebase or shared across devices.
 
-The Firebase Web app config is intended for client apps, but it is not an access-control mechanism. Keep the Firestore rules restrictive and never place an Admin SDK service-account key in this app. These rules let each signed-in user create a profile and create/read only their own voucher requests. Admin approval access needs a separate role-based rule before the Approve Request page is connected.
+The Firebase Web app config is intended for client apps, but it is not an access-control mechanism. Keep the Firestore rules restrictive and never place an Admin SDK service-account key in this app. Publish `firestore.rules` whenever those rules change; profile editing requires the owner-only update rule, and request creation requires an atomic update to the shared reference counter. The rules let each signed-in user create and update only permitted fields in their profile and create/read only their own voucher requests, while manager approval access is role-restricted.
 
 ## Run locally
 

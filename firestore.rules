@@ -36,7 +36,15 @@ service cloud.firestore {
         && request.resource.data.createdAt == request.time;
 
       allow get: if signedIn() && request.auth.uid == userId;
-      allow list, update, delete: if false;
+      allow update: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'employeeId', 'location'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.employeeId.matches('^[0-9]{7}$')
+        && request.resource.data.location in ['Bengaluru', 'Nagpur', 'Gurgaon', 'Hyderabad', 'Kolkata', 'Indore', 'Noida', 'Mohali', 'Chandigarh', 'Mysore', 'Bhubaneswar', 'Trivandrum', 'Pune', 'Mcity'];
+
+      allow list, delete: if false;
     }
 
     match /referenceCounters/{counterId} {
@@ -47,14 +55,17 @@ service cloud.firestore {
         && counterId == 'voucherRequests'
         && request.resource.data.keys().hasAll(['lastReference', 'lastRequestId'])
         && request.resource.data.keys().hasOnly(['lastReference', 'lastRequestId'])
-        && request.resource.data.lastReference == 1001
+        && request.resource.data.lastReference == 3072
         && counterRequestMatches(request.resource.data);
 
       allow update: if signedIn()
         && counterId == 'voucherRequests'
         && request.resource.data.keys().hasAll(['lastReference', 'lastRequestId'])
         && request.resource.data.keys().hasOnly(['lastReference', 'lastRequestId'])
-        && request.resource.data.lastReference == resource.data.lastReference + 1
+        && (
+          request.resource.data.lastReference == resource.data.lastReference + 1
+          || (resource.data.lastReference < 3071 && request.resource.data.lastReference == 3072)
+        )
         && request.resource.data.lastRequestId != resource.data.lastRequestId
         && counterRequestMatches(request.resource.data);
     }
@@ -78,7 +89,7 @@ service cloud.firestore {
         && request.resource.data.certificationCode in ['PL-100', 'PL-200', 'PL-300', 'PL-400', 'PL-500', 'PL-600', 'PL-700', 'PL-800', 'PL-900']
         && request.resource.data.remarks is string
         && request.resource.data.referenceNumber is int
-        && request.resource.data.referenceNumber >= 1001
+        && request.resource.data.referenceNumber >= 3072
         && getAfter(/databases/$(database)/documents/referenceCounters/voucherRequests).data.lastReference == request.resource.data.referenceNumber
         && getAfter(/databases/$(database)/documents/referenceCounters/voucherRequests).data.lastRequestId == requestId
         && request.resource.data.status == 'pending'
